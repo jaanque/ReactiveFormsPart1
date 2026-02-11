@@ -1,0 +1,24 @@
+input.ng-touched.ng-valid,
+select.ng-touched.ng-valid {
+  border-color: #27ae60;
+  border-width: 2px;
+}
+
+input.ng-touched.ng-invalid,
+select.ng-touched.ng-invalid {
+  border-color: #e74c3c;
+  border-width: 2px;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 5px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.pending-message {
+  color: #f39c12;
+  font-size: 13px;
+  margin-top: 5px;
+}

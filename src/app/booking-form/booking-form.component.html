@@ -1,0 +1,155 @@
+<div class="booking-container">
+  <h2>Reserva de Viatge</h2>
+  <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+
+    <!-- Client Data -->
+    <fieldset>
+      <legend>Dades del Client</legend>
+
+      <div class="form-group">
+        <label for="fullName">Nom Complet:</label>
+        <input id="fullName" type="text" formControlName="fullName" placeholder="Ex: Lionel Andrés Messi Cuccittini">
+        <div *ngIf="bookingForm.get('fullName')?.invalid && (bookingForm.get('fullName')?.dirty || bookingForm.get('fullName')?.touched)" class="error-message">
+          <div *ngIf="bookingForm.get('fullName')?.hasError('required')">El nom és obligatori.</div>
+          <div *ngIf="bookingForm.get('fullName')?.hasError('minlength')">El nom ha de tenir mínim 3 caràcters.</div>
+          <div *ngIf="bookingForm.get('fullName')?.hasError('invalidName')">Només lletres i espais permesos.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dni">DNI/NIE:</label>
+        <input id="dni" type="text" formControlName="dni" placeholder="12345678Z">
+        <div *ngIf="bookingForm.get('dni')?.invalid && (bookingForm.get('dni')?.dirty || bookingForm.get('dni')?.touched)" class="error-message">
+          <div *ngIf="bookingForm.get('dni')?.hasError('required')">El DNI/NIE és obligatori.</div>
+          <div *ngIf="bookingForm.get('dni')?.hasError('invalidDniFormat')">Format invàlid (8 nums + lletra).</div>
+          <div *ngIf="bookingForm.get('dni')?.hasError('invalidDniLetter')">La lletra no correspon amb els números.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input id="email" type="email" formControlName="email" placeholder="messi@exemple.com">
+        <div *ngIf="bookingForm.get('email')?.invalid && (bookingForm.get('email')?.dirty || bookingForm.get('email')?.touched)" class="error-message">
+          <div *ngIf="bookingForm.get('email')?.hasError('required')">L'email és obligatori.</div>
+          <div *ngIf="bookingForm.get('email')?.hasError('email')">Format d'email invàlid.</div>
+          <div *ngIf="bookingForm.get('email')?.hasError('emailTaken')">Aquest email ja està registrat.</div>
+        </div>
+        <div *ngIf="bookingForm.get('email')?.pending" class="pending-message">Validant email...</div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Telèfon:</label>
+        <input id="phone" type="tel" formControlName="phone" placeholder="612345678">
+        <div *ngIf="bookingForm.get('phone')?.invalid && (bookingForm.get('phone')?.dirty || bookingForm.get('phone')?.touched)" class="error-message">
+          <div *ngIf="bookingForm.get('phone')?.hasError('required')">El telèfon és obligatori.</div>
+          <div *ngIf="bookingForm.get('phone')?.hasError('invalidPhone')">Telèfon invàlid (ha de començar per 6, 7 o 9 i tenir 9 dígits).</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="birthDate">Data de Naixement:</label>
+        <input id="birthDate" type="date" formControlName="birthDate">
+        <div *ngIf="bookingForm.get('birthDate')?.invalid && (bookingForm.get('birthDate')?.dirty || bookingForm.get('birthDate')?.touched)" class="error-message">
+          <div *ngIf="bookingForm.get('birthDate')?.hasError('required')">La data de naixement és obligatòria.</div>
+          <div *ngIf="bookingForm.get('birthDate')?.hasError('underAge')">Has de ser major de 18 anys.</div>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Trip Information -->
+    <fieldset>
+      <legend>Informació del Viatge</legend>
+
+      <div class="form-group">
+        <label for="destinationSearch">Buscar Destinació:</label>
+        <input id="destinationSearch" type="text" (input)="filterDestinations($event)" placeholder="Filtrar destinacions...">
+      </div>
+
+      <div class="form-group">
+        <label for="destination">Destinació:</label>
+        <select id="destination" formControlName="destination">
+          <option value="">Selecciona una destinació</option>
+          <option *ngFor="let dest of filteredDestinations" [value]="dest">{{ dest }}</option>
+        </select>
+        <div *ngIf="bookingForm.get('destination')?.invalid && (bookingForm.get('destination')?.dirty || bookingForm.get('destination')?.touched)" class="error-message">
+          <div *ngIf="bookingForm.get('destination')?.hasError('required')">La destinació és obligatòria.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="departureDate">Data de Sortida:</label>
+        <input id="departureDate" type="date" formControlName="departureDate">
+        <div *ngIf="bookingForm.get('departureDate')?.invalid && (bookingForm.get('departureDate')?.dirty || bookingForm.get('departureDate')?.touched)" class="error-message">
+          <div *ngIf="bookingForm.get('departureDate')?.hasError('required')">La data de sortida és obligatòria.</div>
+          <div *ngIf="bookingForm.get('departureDate')?.hasError('notFutureDate')">La data ha de ser posterior a avui.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="returnDate">Data de Retorn:</label>
+        <input id="returnDate" type="date" formControlName="returnDate">
+        <div *ngIf="bookingForm.get('returnDate')?.invalid && (bookingForm.get('returnDate')?.dirty || bookingForm.get('returnDate')?.touched)" class="error-message">
+          <div *ngIf="bookingForm.get('returnDate')?.hasError('required')">La data de retorn és obligatòria.</div>
+        </div>
+        <!-- Cross Validation Error -->
+        <div *ngIf="bookingForm.hasError('invalidDateRange') && (bookingForm.get('returnDate')?.dirty || bookingForm.get('returnDate')?.touched)" class="error-message">
+          La data de retorn ha de ser posterior a la data de sortida.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Tipus de Viatge:</label>
+        <div class="radio-group">
+          <label><input type="radio" formControlName="tripType" value="oneWay"> Només anada</label>
+          <label><input type="radio" formControlName="tripType" value="roundTrip"> Anada i tornada</label>
+        </div>
+        <div *ngIf="bookingForm.get('tripType')?.invalid && (bookingForm.get('tripType')?.dirty || bookingForm.get('tripType')?.touched)" class="error-message">
+          <div *ngIf="bookingForm.get('tripType')?.hasError('required')">Selecciona un tipus de viatge.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="travelClass">Classe:</label>
+        <select id="travelClass" formControlName="travelClass">
+          <option value="tourist">Turista</option>
+          <option value="business">Business</option>
+          <option value="firstClass">Primera classe</option>
+        </select>
+        <div *ngIf="bookingForm.get('travelClass')?.invalid && (bookingForm.get('travelClass')?.dirty || bookingForm.get('travelClass')?.touched)" class="error-message">
+          <div *ngIf="bookingForm.get('travelClass')?.hasError('required')">Selecciona una classe.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="passengers">Nombre de Passatgers:</label>
+        <input id="passengers" type="number" formControlName="passengers" min="1" max="10">
+        <div *ngIf="bookingForm.get('passengers')?.invalid && (bookingForm.get('passengers')?.dirty || bookingForm.get('passengers')?.touched)" class="error-message">
+          <div *ngIf="bookingForm.get('passengers')?.hasError('required')">Indica el nombre de passatgers.</div>
+          <div *ngIf="bookingForm.get('passengers')?.hasError('min')">Mínim 1 passatger.</div>
+          <div *ngIf="bookingForm.get('passengers')?.hasError('max')">Màxim 10 passatgers.</div>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Conditions -->
+    <div class="form-group checkbox-group">
+      <label>
+        <input type="checkbox" formControlName="terms">
+        Accepto els termes i condicions
+      </label>
+      <div *ngIf="bookingForm.get('terms')?.invalid && (bookingForm.get('terms')?.dirty || bookingForm.get('terms')?.touched)" class="error-message">
+        <div *ngIf="bookingForm.get('terms')?.hasError('required')">Has d'acceptar els termes.</div>
+      </div>
+    </div>
+
+    <div class="form-group checkbox-group">
+      <label>
+        <input type="checkbox" formControlName="newsletter">
+        Vull rebre la newsletter
+      </label>
+    </div>
+
+    <button type="submit" [disabled]="bookingForm.invalid">Reservar Viatge</button>
+
+  </form>
+</div>
