@@ -1,10 +1,10 @@
-input.ng-touched.ng-valid,
-select.ng-touched.ng-valid {
+
+/* Estilos para el formulario de reserva */
+input.ng-touched.ng-valid {
   border: 2px solid #27ae60;
 }
 
-input.ng-touched.ng-invalid,
-select.ng-touched.ng-invalid {
+input.ng-touched.ng-invalid {
   border: 2px solid #e74c3c;
 }
 
