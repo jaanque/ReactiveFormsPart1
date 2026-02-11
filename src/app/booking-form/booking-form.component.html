@@ -33,7 +33,7 @@
           <div *ngIf="bookingForm.get('email')?.hasError('email')">Format d'email invàlid.</div>
           <div *ngIf="bookingForm.get('email')?.hasError('emailTaken')">Aquest email ja està registrat.</div>
         </div>
-        <div *ngIf="bookingForm.get('email')?.pending" class="pending-message">Validant email...</div>
+        <div *ngIf="bookingForm.get('email')?.pending" class="pending-message">Comprovant...</div>
       </div>
 
       <div class="form-group">
@@ -60,7 +60,10 @@
 
       <div class="form-group">
         <label for="destinationSearch">Buscar Destinació:</label>
-        <input id="destinationSearch" type="text" (input)="filterDestinations($event)" placeholder="Filtrar destinacions...">
+        <input id="destinationSearch" type="text" [formControl]="searchControl" placeholder="Filtrar destinacions...">
+        <div *ngIf="filteredDestinations.length === 0 && searchControl.value" class="error-message">
+          No s'han trobat resultats
+        </div>
       </div>
 
       <div class="form-group">
@@ -127,6 +130,24 @@
           <div *ngIf="bookingForm.get('passengers')?.hasError('max')">Màxim 10 passatgers.</div>
         </div>
       </div>
+
+      <div formArrayName="additionalPassengers" *ngIf="additionalPassengers.length > 0">
+        <div *ngFor="let p of additionalPassengers.controls; let i = index" [formGroupName]="i">
+          <h4>Passatger {{ i + 2 }}</h4>
+          <div class="form-group">
+            <label [for]="'name' + i">Nom:</label>
+            <input [id]="'name' + i" type="text" formControlName="name">
+          </div>
+          <div class="form-group">
+             <label [for]="'age' + i">Edat:</label>
+             <input [id]="'age' + i" type="number" formControlName="age">
+          </div>
+          <div class="form-group">
+             <label [for]="'relation' + i">Relació:</label>
+             <input [id]="'relation' + i" type="text" formControlName="relation">
+          </div>
+        </div>
+      </div>
     </fieldset>
 
     <div class="form-group checkbox-group">
@@ -145,6 +166,8 @@
         Vull rebre la newsletter
       </label>
     </div>
+
+    <h3>Preu Total: {{ totalPrice }} €</h3>
 
     <button type="submit" [disabled]="bookingForm.invalid">Reservar Viatge</button>
 

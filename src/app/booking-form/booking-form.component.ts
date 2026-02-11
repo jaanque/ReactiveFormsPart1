@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, AsyncValidatorFn, FormControl, FormArray } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
@@ -100,6 +100,8 @@ export class BookingFormComponent implements OnInit {
   bookingForm: FormGroup;
   destinations: string[] = ['Barcelona', 'Madrid', 'Valencia', 'Sevilla', 'Bilbao', 'Mallorca'];
   filteredDestinations: string[] = [...this.destinations];
+  searchControl = new FormControl('');
+  totalPrice: number = 0;
   
   constructor(private fb: FormBuilder) {
     this.bookingForm = this.fb.group({
@@ -114,24 +116,67 @@ export class BookingFormComponent implements OnInit {
       tripType: ['oneWay', Validators.required],
       travelClass: ['tourist', Validators.required],
       passengers: [1, [Validators.required, Validators.min(1), Validators.max(10)]],
+      additionalPassengers: this.fb.array([]),
       terms: [false, Validators.requiredTrue],
       newsletter: [false]
     }, { validators: dateRangeValidator });
+
+    this.setupPassengersSync();
+    this.calculatePrice();
+    this.bookingForm.valueChanges.subscribe(() => this.calculatePrice());
+  }
+
+  get additionalPassengers(): FormArray {
+    return this.bookingForm.get('additionalPassengers') as FormArray;
   }
 
   ngOnInit(): void {
+    this.searchControl.valueChanges.subscribe(value => {
+      const query = (value || '').toLowerCase();
+      this.filteredDestinations = this.destinations.filter(d => d.toLowerCase().includes(query));
+    });
+  }
+
+  setupPassengersSync(): void {
     this.bookingForm.get('passengers')?.valueChanges.subscribe(num => {
       this.adjustPassengers(num);
     });
   }
 
-  filterDestinations(event: any): void {
-    const query = event.target.value.toLowerCase();
-    this.filteredDestinations = this.destinations.filter(d => d.toLowerCase().includes(query));
+  calculatePrice(): void {
+    const basePrices: {[key: string]: number} = {
+      tourist: 100,
+      business: 250,
+      firstClass: 500
+    };
+    
+    const travelClass = this.bookingForm.get('travelClass')?.value;
+    const passengers = this.bookingForm.get('passengers')?.value;
+    
+    if (travelClass && passengers) {
+      this.totalPrice = (basePrices[travelClass] || 0) * passengers;
+    } else {
+      this.totalPrice = 0;
+    }
   }
 
   adjustPassengers(num: number): void {
-    console.log('Passengers changed:', num);
+    const currentCount = this.additionalPassengers.length;
+    const needed = num - 1;
+
+    if (needed > currentCount) {
+      for (let i = currentCount; i < needed; i++) {
+        this.additionalPassengers.push(this.fb.group({
+          name: ['', Validators.required],
+          age: ['', Validators.required],
+          relation: ['', Validators.required]
+        }));
+      }
+    } else if (needed < currentCount) {
+      for (let i = currentCount; i > needed; i--) {
+        this.additionalPassengers.removeAt(i - 1);
+      }
+    }
   }
 
   onSubmit(): void {
