@@ -4,9 +4,6 @@ import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 
-// Custom Validators
-
-// 1. Validador de Telèfon Espanyol
 export function phoneValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
   if (!value) return null;
@@ -14,7 +11,6 @@ export function phoneValidator(control: AbstractControl): ValidationErrors | nul
   return phoneRegex.test(value) ? null : { invalidPhone: true };
 }
 
-// 2. Validador d'Edat Mínima (18 years)
 export function ageValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
   if (!value) return null;
@@ -28,7 +24,6 @@ export function ageValidator(control: AbstractControl): ValidationErrors | null 
   return age >= 18 ? null : { underAge: true };
 }
 
-// 3. Validador de Data Futura
 export function futureDateValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
   if (!value) return null;
@@ -38,7 +33,6 @@ export function futureDateValidator(control: AbstractControl): ValidationErrors 
   return inputDate > today ? null : { notFutureDate: true };
 }
 
-// 4. Validador Creuada de Dates (Return > Departure)
 export function dateRangeValidator(group: AbstractControl): ValidationErrors | null {
   const departure = group.get('departureDate')?.value;
   const returnDate = group.get('returnDate')?.value;
@@ -48,7 +42,6 @@ export function dateRangeValidator(group: AbstractControl): ValidationErrors | n
   return r > d ? null : { invalidDateRange: true };
 }
 
-// 5. Validador de Nom (només lletres i espais)
 export function nameValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
   if (!value) return null;
@@ -56,7 +49,6 @@ export function nameValidator(control: AbstractControl): ValidationErrors | null
   return nameRegex.test(value) ? null : { invalidName: true };
 }
 
-// DNI/NIE Validator
 export function dniValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
   if (!value) return null;
@@ -64,20 +56,13 @@ export function dniValidator(control: AbstractControl): ValidationErrors | null 
   let dni = value.toUpperCase();
   const niePrefix = dni.charAt(0);
   
-  // Handle NIE (X, Y, Z)
   if (['X', 'Y', 'Z'].includes(niePrefix)) {
     dni = dni.replace('X', '0').replace('Y', '1').replace('Z', '2');
   }
 
   const standardDniRegex = /^\d{8}[A-Z]$/;
-  
-  // Basic format check (8 digits + letter) for DNI or modified NIE
+
   if (!standardDniRegex.test(dni)) {
-      // Check if it's the original NIE format (Letter + 7 digits + Letter) before replacement
-      // If we replaced X/Y/Z, it became 8 digits + letter.
-      // If the input was something else, it might fail here.
-      // Let's rely on strict parsing.
-      // If it was a NIE like X1234567L, it became 01234567L which matches standardDniRegex.
       return { invalidDniFormat: true };
   }
 
@@ -92,7 +77,6 @@ export function dniValidator(control: AbstractControl): ValidationErrors | null 
   }
 }
 
-// Async Validator for Email
 export function emailAsyncValidator(): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
     const forbiddenEmails = ['test@test.com', 'reserva@viajes.com', 'admin@travel.com'];
@@ -136,13 +120,11 @@ export class BookingFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Listen for passenger changes
     this.bookingForm.get('passengers')?.valueChanges.subscribe(num => {
       this.adjustPassengers(num);
     });
   }
 
-  // Search/Filter destinations
   filterDestinations(event: any): void {
     const query = event.target.value.toLowerCase();
     this.filteredDestinations = this.destinations.filter(d => d.toLowerCase().includes(query));
@@ -150,7 +132,6 @@ export class BookingFormComponent implements OnInit {
 
   adjustPassengers(num: number): void {
     console.log('Passengers changed:', num);
-    // Logic to adjust passengers if needed, or just log for now as per "Consells i Pistes"
   }
 
   onSubmit(): void {
@@ -162,7 +143,6 @@ export class BookingFormComponent implements OnInit {
     }
   }
 
-  // Helper to check errors easily in template
   hasError(controlName: string, errorName: string): boolean {
     const control = this.bookingForm.get(controlName);
     return !!(control && control.touched && control.hasError(errorName));

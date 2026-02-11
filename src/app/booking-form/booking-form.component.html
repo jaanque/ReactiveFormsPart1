@@ -2,7 +2,6 @@
   <h2>Reserva de Viatge</h2>
   <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
 
-    <!-- Client Data -->
     <fieldset>
       <legend>Dades del Client</legend>
 
@@ -38,7 +37,7 @@
       </div>
 
       <div class="form-group">
-        <label for="phone">Telèfon:</label>
+        <label for="phone">Telèfon: +34 </label>
         <input id="phone" type="tel" formControlName="phone" placeholder="612345678">
         <div *ngIf="bookingForm.get('phone')?.invalid && (bookingForm.get('phone')?.dirty || bookingForm.get('phone')?.touched)" class="error-message">
           <div *ngIf="bookingForm.get('phone')?.hasError('required')">El telèfon és obligatori.</div>
@@ -56,7 +55,6 @@
       </div>
     </fieldset>
 
-    <!-- Trip Information -->
     <fieldset>
       <legend>Informació del Viatge</legend>
 
@@ -91,7 +89,7 @@
         <div *ngIf="bookingForm.get('returnDate')?.invalid && (bookingForm.get('returnDate')?.dirty || bookingForm.get('returnDate')?.touched)" class="error-message">
           <div *ngIf="bookingForm.get('returnDate')?.hasError('required')">La data de retorn és obligatòria.</div>
         </div>
-        <!-- Cross Validation Error -->
+
         <div *ngIf="bookingForm.hasError('invalidDateRange') && (bookingForm.get('returnDate')?.dirty || bookingForm.get('returnDate')?.touched)" class="error-message">
           La data de retorn ha de ser posterior a la data de sortida.
         </div>
@@ -131,7 +129,6 @@
       </div>
     </fieldset>
 
-    <!-- Conditions -->
     <div class="form-group checkbox-group">
       <label>
         <input type="checkbox" formControlName="terms">

@@ -1,24 +1,35 @@
 input.ng-touched.ng-valid,
 select.ng-touched.ng-valid {
-  border-color: #27ae60;
-  border-width: 2px;
+  border: 2px solid #27ae60;
 }
 
 input.ng-touched.ng-invalid,
 select.ng-touched.ng-invalid {
-  border-color: #e74c3c;
-  border-width: 2px;
+  border: 2px solid #e74c3c;
 }
 
 .error-message {
   color: #e74c3c;
   font-size: 13px;
-  margin-top: 5px;
   animation: fadeIn 0.3s ease-in-out;
 }
 
 .pending-message {
   color: #f39c12;
   font-size: 13px;
-  margin-top: 5px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
