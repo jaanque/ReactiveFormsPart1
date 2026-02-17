@@ -8,50 +8,68 @@
       <div class="form-group">
         <label for="fullName">Nom Complet:</label>
         <input id="fullName" type="text" formControlName="fullName" placeholder="Ex: Lionel Andrés Messi Cuccittini">
-        <div *ngIf="bookingForm.get('fullName')?.invalid && (bookingForm.get('fullName')?.dirty || bookingForm.get('fullName')?.touched)" class="error-message">
-          <div *ngIf="bookingForm.get('fullName')?.hasError('required')">El nom és obligatori.</div>
-          <div *ngIf="bookingForm.get('fullName')?.hasError('minlength')">El nom ha de tenir mínim 3 caràcters.</div>
-          <div *ngIf="bookingForm.get('fullName')?.hasError('invalidName')">Només lletres i espais permesos.</div>
-        </div>
+        
+        @if (bookingForm.get('fullName')?.invalid && (bookingForm.get('fullName')?.dirty || bookingForm.get('fullName')?.touched)) {
+          <div class="error-message">
+            @if (bookingForm.get('fullName')?.hasError('required')) { <div>El nom és obligatori.</div> }
+            @if (bookingForm.get('fullName')?.hasError('minlength')) { <div>El nom ha de tenir mínim 3 caràcters.</div> }
+            @if (bookingForm.get('fullName')?.hasError('invalidName')) { <div>Només lletres i espais permesos.</div> }
+          </div>
+        }
       </div>
 
       <div class="form-group">
         <label for="dni">DNI/NIE:</label>
         <input id="dni" type="text" formControlName="dni" placeholder="12345678Z">
-        <div *ngIf="bookingForm.get('dni')?.invalid && (bookingForm.get('dni')?.dirty || bookingForm.get('dni')?.touched)" class="error-message">
-          <div *ngIf="bookingForm.get('dni')?.hasError('required')">El DNI/NIE és obligatori.</div>
-          <div *ngIf="bookingForm.get('dni')?.hasError('invalidDniFormat')">Format invàlid (8 nums + lletra).</div>
-          <div *ngIf="bookingForm.get('dni')?.hasError('invalidDniLetter')">La lletra no correspon amb els números.</div>
-        </div>
+        
+        @if (bookingForm.get('dni')?.invalid && (bookingForm.get('dni')?.dirty || bookingForm.get('dni')?.touched)) {
+          <div class="error-message">
+            @if (bookingForm.get('dni')?.hasError('required')) { <div>El DNI/NIE és obligatori.</div> }
+            @if (bookingForm.get('dni')?.hasError('invalidDniFormat')) { <div>Format invàlid (8 nums + lletra).</div> }
+            @if (bookingForm.get('dni')?.hasError('invalidDniLetter')) { <div>La lletra no correspon amb els números.</div> }
+          </div>
+        }
       </div>
 
       <div class="form-group">
         <label for="email">Email:</label>
         <input id="email" type="email" formControlName="email" placeholder="messi@exemple.com">
-        <div *ngIf="bookingForm.get('email')?.invalid && (bookingForm.get('email')?.dirty || bookingForm.get('email')?.touched)" class="error-message">
-          <div *ngIf="bookingForm.get('email')?.hasError('required')">L'email és obligatori.</div>
-          <div *ngIf="bookingForm.get('email')?.hasError('email')">Format d'email invàlid.</div>
-          <div *ngIf="bookingForm.get('email')?.hasError('emailTaken')">Aquest email ja està registrat.</div>
-        </div>
-        <div *ngIf="bookingForm.get('email')?.pending" class="pending-message">Comprovant...</div>
+        
+        @if (bookingForm.get('email')?.invalid && (bookingForm.get('email')?.dirty || bookingForm.get('email')?.touched)) {
+          <div class="error-message">
+            @if (bookingForm.get('email')?.hasError('required')) { <div>L'email és obligatori.</div> }
+            @if (bookingForm.get('email')?.hasError('email')) { <div>Format d'email invàlid.</div> }
+            @if (bookingForm.get('email')?.hasError('emailTaken')) { <div>Aquest email ja està registrat.</div> }
+          </div>
+        }
+        
+        @if (bookingForm.get('email')?.pending) {
+          <div class="pending-message">Comprovant...</div>
+        }
       </div>
 
       <div class="form-group">
         <label for="phone">Telèfon: +34 </label>
         <input id="phone" type="tel" formControlName="phone" placeholder="612345678">
-        <div *ngIf="bookingForm.get('phone')?.invalid && (bookingForm.get('phone')?.dirty || bookingForm.get('phone')?.touched)" class="error-message">
-          <div *ngIf="bookingForm.get('phone')?.hasError('required')">El telèfon és obligatori.</div>
-          <div *ngIf="bookingForm.get('phone')?.hasError('invalidPhone')">Telèfon invàlid (ha de començar per 6, 7 o 9 i tenir 9 dígits).</div>
-        </div>
+        
+        @if (bookingForm.get('phone')?.invalid && (bookingForm.get('phone')?.dirty || bookingForm.get('phone')?.touched)) {
+          <div class="error-message">
+            @if (bookingForm.get('phone')?.hasError('required')) { <div>El telèfon és obligatori.</div> }
+            @if (bookingForm.get('phone')?.hasError('invalidPhone')) { <div>Telèfon invàlid (ha de començar per 6, 7 o 9 i tenir 9 dígits).</div> }
+          </div>
+        }
       </div>
 
       <div class="form-group">
         <label for="birthDate">Data de Naixement:</label>
         <input id="birthDate" type="date" formControlName="birthDate">
-        <div *ngIf="bookingForm.get('birthDate')?.invalid && (bookingForm.get('birthDate')?.dirty || bookingForm.get('birthDate')?.touched)" class="error-message">
-          <div *ngIf="bookingForm.get('birthDate')?.hasError('required')">La data de naixement és obligatòria.</div>
-          <div *ngIf="bookingForm.get('birthDate')?.hasError('underAge')">Has de ser major de 18 anys.</div>
-        </div>
+        
+        @if (bookingForm.get('birthDate')?.invalid && (bookingForm.get('birthDate')?.dirty || bookingForm.get('birthDate')?.touched)) {
+          <div class="error-message">
+            @if (bookingForm.get('birthDate')?.hasError('required')) { <div>La data de naixement és obligatòria.</div> }
+            @if (bookingForm.get('birthDate')?.hasError('underAge')) { <div>Has de ser major de 18 anys.</div> }
+          </div>
+        }
       </div>
     </fieldset>
 
@@ -61,41 +79,55 @@
       <div class="form-group">
         <label for="destinationSearch">Buscar Destinació:</label>
         <input id="destinationSearch" type="text" [formControl]="searchControl" placeholder="Filtrar destinacions...">
-        <div *ngIf="filteredDestinations.length === 0 && searchControl.value" class="error-message">
-          No s'han trobat resultats
-        </div>
+        
+        @if (filteredDestinations.length === 0 && searchControl.value) {
+          <div class="error-message">No s'han trobat resultats</div>
+        }
       </div>
 
       <div class="form-group">
         <label for="destination">Destinació:</label>
         <select id="destination" formControlName="destination">
           <option value="">Selecciona una destinació</option>
-          <option *ngFor="let dest of filteredDestinations" [value]="dest">{{ dest }}</option>
+          @for (dest of filteredDestinations; track dest) {
+            <option [value]="dest">{{ dest }}</option>
+          }
         </select>
-        <div *ngIf="bookingForm.get('destination')?.invalid && (bookingForm.get('destination')?.dirty || bookingForm.get('destination')?.touched)" class="error-message">
-          <div *ngIf="bookingForm.get('destination')?.hasError('required')">La destinació és obligatòria.</div>
-        </div>
+        
+        @if (bookingForm.get('destination')?.invalid && (bookingForm.get('destination')?.dirty || bookingForm.get('destination')?.touched)) {
+          <div class="error-message">
+            @if (bookingForm.get('destination')?.hasError('required')) { <div>La destinació és obligatòria.</div> }
+          </div>
+        }
       </div>
 
       <div class="form-group">
         <label for="departureDate">Data de Sortida:</label>
         <input id="departureDate" type="date" formControlName="departureDate">
-        <div *ngIf="bookingForm.get('departureDate')?.invalid && (bookingForm.get('departureDate')?.dirty || bookingForm.get('departureDate')?.touched)" class="error-message">
-          <div *ngIf="bookingForm.get('departureDate')?.hasError('required')">La data de sortida és obligatòria.</div>
-          <div *ngIf="bookingForm.get('departureDate')?.hasError('notFutureDate')">La data ha de ser posterior a avui.</div>
-        </div>
+        
+        @if (bookingForm.get('departureDate')?.invalid && (bookingForm.get('departureDate')?.dirty || bookingForm.get('departureDate')?.touched)) {
+          <div class="error-message">
+            @if (bookingForm.get('departureDate')?.hasError('required')) { <div>La data de sortida és obligatòria.</div> }
+            @if (bookingForm.get('departureDate')?.hasError('notFutureDate')) { <div>La data ha de ser posterior a avui.</div> }
+          </div>
+        }
       </div>
 
       <div class="form-group">
         <label for="returnDate">Data de Retorn:</label>
         <input id="returnDate" type="date" formControlName="returnDate">
-        <div *ngIf="bookingForm.get('returnDate')?.invalid && (bookingForm.get('returnDate')?.dirty || bookingForm.get('returnDate')?.touched)" class="error-message">
-          <div *ngIf="bookingForm.get('returnDate')?.hasError('required')">La data de retorn és obligatòria.</div>
-        </div>
+        
+        @if (bookingForm.get('returnDate')?.invalid && (bookingForm.get('returnDate')?.dirty || bookingForm.get('returnDate')?.touched)) {
+          <div class="error-message">
+            @if (bookingForm.get('returnDate')?.hasError('required')) { <div>La data de retorn és obligatòria.</div> }
+          </div>
+        }
 
-        <div *ngIf="bookingForm.hasError('invalidDateRange') && (bookingForm.get('returnDate')?.dirty || bookingForm.get('returnDate')?.touched)" class="error-message">
-          La data de retorn ha de ser posterior a la data de sortida.
-        </div>
+        @if (bookingForm.hasError('invalidDateRange') && (bookingForm.get('returnDate')?.dirty || bookingForm.get('returnDate')?.touched)) {
+          <div class="error-message">
+            La data de retorn ha de ser posterior a la data de sortida.
+          </div>
+        }
       </div>
 
       <div class="form-group">
@@ -104,9 +136,12 @@
           <label><input type="radio" formControlName="tripType" value="oneWay"> Només anada</label>
           <label><input type="radio" formControlName="tripType" value="roundTrip"> Anada i tornada</label>
         </div>
-        <div *ngIf="bookingForm.get('tripType')?.invalid && (bookingForm.get('tripType')?.dirty || bookingForm.get('tripType')?.touched)" class="error-message">
-          <div *ngIf="bookingForm.get('tripType')?.hasError('required')">Selecciona un tipus de viatge.</div>
-        </div>
+        
+        @if (bookingForm.get('tripType')?.invalid && (bookingForm.get('tripType')?.dirty || bookingForm.get('tripType')?.touched)) {
+          <div class="error-message">
+            @if (bookingForm.get('tripType')?.hasError('required')) { <div>Selecciona un tipus de viatge.</div> }
+          </div>
+        }
       </div>
 
       <div class="form-group">
@@ -116,37 +151,47 @@
           <option value="business">Business</option>
           <option value="firstClass">Primera classe</option>
         </select>
-        <div *ngIf="bookingForm.get('travelClass')?.invalid && (bookingForm.get('travelClass')?.dirty || bookingForm.get('travelClass')?.touched)" class="error-message">
-          <div *ngIf="bookingForm.get('travelClass')?.hasError('required')">Selecciona una classe.</div>
-        </div>
+        
+        @if (bookingForm.get('travelClass')?.invalid && (bookingForm.get('travelClass')?.dirty || bookingForm.get('travelClass')?.touched)) {
+          <div class="error-message">
+            @if (bookingForm.get('travelClass')?.hasError('required')) { <div>Selecciona una classe.</div> }
+          </div>
+        }
       </div>
 
       <div class="form-group">
         <label for="passengers">Nombre de Passatgers:</label>
         <input id="passengers" type="number" formControlName="passengers" min="1" max="10">
-        <div *ngIf="bookingForm.get('passengers')?.invalid && (bookingForm.get('passengers')?.dirty || bookingForm.get('passengers')?.touched)" class="error-message">
-          <div *ngIf="bookingForm.get('passengers')?.hasError('required')">Indica el nombre de passatgers.</div>
-          <div *ngIf="bookingForm.get('passengers')?.hasError('min')">Mínim 1 passatger.</div>
-          <div *ngIf="bookingForm.get('passengers')?.hasError('max')">Màxim 10 passatgers.</div>
-        </div>
+        
+        @if (bookingForm.get('passengers')?.invalid && (bookingForm.get('passengers')?.dirty || bookingForm.get('passengers')?.touched)) {
+          <div class="error-message">
+            @if (bookingForm.get('passengers')?.hasError('required')) { <div>Indica el nombre de passatgers.</div> }
+            @if (bookingForm.get('passengers')?.hasError('min')) { <div>Mínim 1 passatger.</div> }
+            @if (bookingForm.get('passengers')?.hasError('max')) { <div>Màxim 10 passatgers.</div> }
+          </div>
+        }
       </div>
 
-      <div formArrayName="additionalPassengers" *ngIf="additionalPassengers.length > 0">
-        <div *ngFor="let p of additionalPassengers.controls; let i = index" [formGroupName]="i">
-          <h4>Passatger {{ i + 2 }}</h4>
-          <div class="form-group">
-            <label [for]="'name' + i">Nom:</label>
-            <input [id]="'name' + i" type="text" formControlName="name">
-          </div>
-          <div class="form-group">
-             <label [for]="'age' + i">Edat:</label>
-             <input [id]="'age' + i" type="number" formControlName="age">
-          </div>
-          <div class="form-group">
-             <label [for]="'relation' + i">Relació:</label>
-             <input [id]="'relation' + i" type="text" formControlName="relation">
-          </div>
-        </div>
+      <div formArrayName="additionalPassengers">
+        @if (additionalPassengers.length > 0) {
+          @for (p of additionalPassengers.controls; track $index; let i = $index) {
+            <div [formGroupName]="i">
+              <h4>Passatger {{ i + 2 }}</h4>
+              <div class="form-group">
+                <label [for]="'name' + i">Nom:</label>
+                <input [id]="'name' + i" type="text" formControlName="name">
+              </div>
+              <div class="form-group">
+                 <label [for]="'age' + i">Edat:</label>
+                 <input [id]="'age' + i" type="number" formControlName="age">
+              </div>
+              <div class="form-group">
+                 <label [for]="'relation' + i">Relació:</label>
+                 <input [id]="'relation' + i" type="text" formControlName="relation">
+              </div>
+            </div>
+          }
+        }
       </div>
     </fieldset>
 
@@ -155,9 +200,12 @@
         <input type="checkbox" formControlName="terms">
         Accepto els termes i condicions
       </label>
-      <div *ngIf="bookingForm.get('terms')?.invalid && (bookingForm.get('terms')?.dirty || bookingForm.get('terms')?.touched)" class="error-message">
-        <div *ngIf="bookingForm.get('terms')?.hasError('required')">Has d'acceptar els termes.</div>
-      </div>
+      
+      @if (bookingForm.get('terms')?.invalid && (bookingForm.get('terms')?.dirty || bookingForm.get('terms')?.touched)) {
+        <div class="error-message">
+          @if (bookingForm.get('terms')?.hasError('required')) { <div>Has d'acceptar els termes.</div> }
+        </div>
+      }
     </div>
 
     <div class="form-group checkbox-group">
