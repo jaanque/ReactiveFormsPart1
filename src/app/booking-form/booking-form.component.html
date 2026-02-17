@@ -8,7 +8,6 @@
       <div class="form-group">
         <label for="fullName">Nom Complet:</label>
         <input id="fullName" type="text" formControlName="fullName" placeholder="Ex: Lionel Andrés Messi Cuccittini">
-        
         @if (bookingForm.get('fullName')?.invalid && (bookingForm.get('fullName')?.dirty || bookingForm.get('fullName')?.touched)) {
           <div class="error-message">
             @if (bookingForm.get('fullName')?.hasError('required')) { <div>El nom és obligatori.</div> }
@@ -21,7 +20,6 @@
       <div class="form-group">
         <label for="dni">DNI/NIE:</label>
         <input id="dni" type="text" formControlName="dni" placeholder="12345678Z">
-        
         @if (bookingForm.get('dni')?.invalid && (bookingForm.get('dni')?.dirty || bookingForm.get('dni')?.touched)) {
           <div class="error-message">
             @if (bookingForm.get('dni')?.hasError('required')) { <div>El DNI/NIE és obligatori.</div> }
@@ -34,7 +32,6 @@
       <div class="form-group">
         <label for="email">Email:</label>
         <input id="email" type="email" formControlName="email" placeholder="messi@exemple.com">
-        
         @if (bookingForm.get('email')?.invalid && (bookingForm.get('email')?.dirty || bookingForm.get('email')?.touched)) {
           <div class="error-message">
             @if (bookingForm.get('email')?.hasError('required')) { <div>L'email és obligatori.</div> }
@@ -42,16 +39,12 @@
             @if (bookingForm.get('email')?.hasError('emailTaken')) { <div>Aquest email ja està registrat.</div> }
           </div>
         }
-        
-        @if (bookingForm.get('email')?.pending) {
-          <div class="pending-message">Comprovant...</div>
-        }
+        @if (bookingForm.get('email')?.pending) { <div class="pending-message">Comprovant...</div> }
       </div>
 
       <div class="form-group">
         <label for="phone">Telèfon: +34 </label>
         <input id="phone" type="tel" formControlName="phone" placeholder="612345678">
-        
         @if (bookingForm.get('phone')?.invalid && (bookingForm.get('phone')?.dirty || bookingForm.get('phone')?.touched)) {
           <div class="error-message">
             @if (bookingForm.get('phone')?.hasError('required')) { <div>El telèfon és obligatori.</div> }
@@ -63,7 +56,6 @@
       <div class="form-group">
         <label for="birthDate">Data de Naixement:</label>
         <input id="birthDate" type="date" formControlName="birthDate">
-        
         @if (bookingForm.get('birthDate')?.invalid && (bookingForm.get('birthDate')?.dirty || bookingForm.get('birthDate')?.touched)) {
           <div class="error-message">
             @if (bookingForm.get('birthDate')?.hasError('required')) { <div>La data de naixement és obligatòria.</div> }
@@ -79,21 +71,15 @@
       <div class="form-group">
         <label for="destinationSearch">Buscar Destinació:</label>
         <input id="destinationSearch" type="text" [formControl]="searchControl" placeholder="Filtrar destinacions...">
-        
-        @if (filteredDestinations.length === 0 && searchControl.value) {
-          <div class="error-message">No s'han trobat resultats</div>
-        }
+        @if (filteredDestinations.length === 0 && searchControl.value) { <div class="error-message">No s'han trobat resultats</div> }
       </div>
 
       <div class="form-group">
         <label for="destination">Destinació:</label>
         <select id="destination" formControlName="destination">
           <option value="">Selecciona una destinació</option>
-          @for (dest of filteredDestinations; track dest) {
-            <option [value]="dest">{{ dest }}</option>
-          }
+          @for (dest of filteredDestinations; track dest) { <option [value]="dest">{{ dest }}</option> }
         </select>
-        
         @if (bookingForm.get('destination')?.invalid && (bookingForm.get('destination')?.dirty || bookingForm.get('destination')?.touched)) {
           <div class="error-message">
             @if (bookingForm.get('destination')?.hasError('required')) { <div>La destinació és obligatòria.</div> }
@@ -104,7 +90,6 @@
       <div class="form-group">
         <label for="departureDate">Data de Sortida:</label>
         <input id="departureDate" type="date" formControlName="departureDate">
-        
         @if (bookingForm.get('departureDate')?.invalid && (bookingForm.get('departureDate')?.dirty || bookingForm.get('departureDate')?.touched)) {
           <div class="error-message">
             @if (bookingForm.get('departureDate')?.hasError('required')) { <div>La data de sortida és obligatòria.</div> }
@@ -116,17 +101,13 @@
       <div class="form-group">
         <label for="returnDate">Data de Retorn:</label>
         <input id="returnDate" type="date" formControlName="returnDate">
-        
         @if (bookingForm.get('returnDate')?.invalid && (bookingForm.get('returnDate')?.dirty || bookingForm.get('returnDate')?.touched)) {
           <div class="error-message">
             @if (bookingForm.get('returnDate')?.hasError('required')) { <div>La data de retorn és obligatòria.</div> }
           </div>
         }
-
         @if (bookingForm.hasError('invalidDateRange') && (bookingForm.get('returnDate')?.dirty || bookingForm.get('returnDate')?.touched)) {
-          <div class="error-message">
-            La data de retorn ha de ser posterior a la data de sortida.
-          </div>
+          <div class="error-message">La data de retorn ha de ser posterior a la data de sortida.</div>
         }
       </div>
 
@@ -136,7 +117,6 @@
           <label><input type="radio" formControlName="tripType" value="oneWay"> Només anada</label>
           <label><input type="radio" formControlName="tripType" value="roundTrip"> Anada i tornada</label>
         </div>
-        
         @if (bookingForm.get('tripType')?.invalid && (bookingForm.get('tripType')?.dirty || bookingForm.get('tripType')?.touched)) {
           <div class="error-message">
             @if (bookingForm.get('tripType')?.hasError('required')) { <div>Selecciona un tipus de viatge.</div> }
@@ -151,7 +131,6 @@
           <option value="business">Business</option>
           <option value="firstClass">Primera classe</option>
         </select>
-        
         @if (bookingForm.get('travelClass')?.invalid && (bookingForm.get('travelClass')?.dirty || bookingForm.get('travelClass')?.touched)) {
           <div class="error-message">
             @if (bookingForm.get('travelClass')?.hasError('required')) { <div>Selecciona una classe.</div> }
@@ -162,7 +141,6 @@
       <div class="form-group">
         <label for="passengers">Nombre de Passatgers:</label>
         <input id="passengers" type="number" formControlName="passengers" min="1" max="10">
-        
         @if (bookingForm.get('passengers')?.invalid && (bookingForm.get('passengers')?.dirty || bookingForm.get('passengers')?.touched)) {
           <div class="error-message">
             @if (bookingForm.get('passengers')?.hasError('required')) { <div>Indica el nombre de passatgers.</div> }
@@ -197,10 +175,8 @@
 
     <div class="form-group checkbox-group">
       <label>
-        <input type="checkbox" formControlName="terms">
-        Accepto els termes i condicions
+        <input type="checkbox" formControlName="terms"> Accepto els termes i condicions
       </label>
-      
       @if (bookingForm.get('terms')?.invalid && (bookingForm.get('terms')?.dirty || bookingForm.get('terms')?.touched)) {
         <div class="error-message">
           @if (bookingForm.get('terms')?.hasError('required')) { <div>Has d'acceptar els termes.</div> }
@@ -210,14 +186,11 @@
 
     <div class="form-group checkbox-group">
       <label>
-        <input type="checkbox" formControlName="newsletter">
-        Vull rebre la newsletter
+        <input type="checkbox" formControlName="newsletter"> Vull rebre la newsletter
       </label>
     </div>
 
     <h3>Preu Total: {{ totalPrice }} €</h3>
-
     <button type="submit" [disabled]="bookingForm.invalid">Reservar Viatge</button>
-
   </form>
 </div>
