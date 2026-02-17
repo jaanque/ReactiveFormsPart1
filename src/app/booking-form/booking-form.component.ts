@@ -39,9 +39,9 @@ export function dateRangeValidator(group: AbstractControl): ValidationErrors | n
   const departure = group.get('departureDate')?.value;
   const returnDate = group.get('returnDate')?.value;
   if (!departure || !returnDate) return null;
-  const d = new Date(departure);
-  const r = new Date(returnDate);
-  return r > d ? null : { invalidDateRange: true };
+  const departureDate = new Date(departure);
+  const returnDate2 = new Date(returnDate);
+  return returnDate2 > departureDate ? null : { invalidDateRange: true };
 }
 
 
@@ -65,15 +65,8 @@ export function dniValidator(control: AbstractControl): ValidationErrors | null 
   if (!standardDniRegex.test(dni)) {
     return { invalidDniFormat: true };
   }
-
-  const number = parseInt(dni.substring(0, 8), 10);
-  const letter = dni.substring(8, 9);
-  const letters = 'TRWAGMYFPDXBNJZSQVHLCKE';
-
-  if (letters.charAt(number % 23) === letter) {
+  else {
     return null;
-  } else {
-    return { invalidDniLetter: true };
   }
 }
 
