@@ -94,7 +94,7 @@ export function emailAsyncValidator(): AsyncValidatorFn {
   styleUrl: './booking-form.component.css'
 })
 
-// Classe del component
+// Agrupo els destins
 export class BookingFormComponent implements OnInit {
   bookingForm: FormGroup;
   destinations: string[] = ['Barcelona', 'Madrid', 'Valencia', 'Sevilla', 'Bilbao', 'Mallorca'];
