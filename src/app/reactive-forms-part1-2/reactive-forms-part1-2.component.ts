@@ -6,7 +6,7 @@ import { delay, map } from 'rxjs/operators';
 
 // Validadores personalizados
 
-// Validar el telefon espanya
+// Validar el telefon
 export function phoneValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
   if (!value) return null;
@@ -94,7 +94,7 @@ export function emailAsyncValidator(): AsyncValidatorFn {
   styleUrl: './reactive-forms-part1-2.component.css'
 })
 
-// Agrupo els destins
+// Agrupo els destins i els filtres de cerca, el formulari de reserva i la lògica per a calcular el preu total i gestionar els passatgers addicionals
 export class ReactiveFormsPart1_2Component implements OnInit {
   bookingForm: FormGroup;
   destinations: string[] = ['Barcelona', 'Madrid', 'Valencia', 'Sevilla', 'Bilbao', 'Mallorca'];
@@ -117,6 +117,7 @@ export class ReactiveFormsPart1_2Component implements OnInit {
       tripType: ['oneWay', Validators.required],
       travelClass: ['tourist', Validators.required],
       passengers: [1, [Validators.required, Validators.min(1), Validators.max(10)]],
+      // FormArray per a informació dels passatgers addicionals
       additionalPassengers: this.fb.array([]),
       terms: [false, Validators.requiredTrue],
       newsletter: [false]
@@ -130,7 +131,7 @@ export class ReactiveFormsPart1_2Component implements OnInit {
   }
 
 
-  // Getter per accedir al FormArray d'informació dels passatgers addicionals
+  // faig que AditionalPassangers sigui el FormArray
   get additionalPassengers(): FormArray {
     return this.bookingForm.get('additionalPassengers') as FormArray;
   }
@@ -143,7 +144,7 @@ export class ReactiveFormsPart1_2Component implements OnInit {
     });
   }
 
-  // Sincronitzar num passatgers adicionals amb el FormArray
+  // Creo el fg per sincronitzar num passatgers adicionals amb el FormArray
   setupPassengersSync(): void {
     this.bookingForm.get('passengers')?.valueChanges.subscribe(num => {
       this.adjustPassengers(num);
@@ -174,7 +175,7 @@ export class ReactiveFormsPart1_2Component implements OnInit {
     const currentCount = this.additionalPassengers.length;
     const needed = num - 1;
 
-    // ficar els camps per als nous passatgers o eliminar els que sobren
+    // fg per ficar els camps per als nous passatgers o eliminar els que sobren
     if (needed > currentCount) {
       for (let i = currentCount; i < needed; i++) {
         this.additionalPassengers.push(this.fb.group({
