@@ -86,16 +86,16 @@ export function emailAsyncValidator(): AsyncValidatorFn {
 
 // Component de formulari de reserva
 @Component({
-  selector: 'app-booking-form',
+  selector: 'app-reactive-forms-part1-2',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule // Active els formularis reactius
   ],
-  templateUrl: './booking-form.component.html',
-  styleUrl: './booking-form.component.css'
+  templateUrl: './reactive-forms-part1-2.component.html',
+  styleUrl: './reactive-forms-part1-2.component.css'
 })
 
 // Agrupo els destins
-export class BookingFormComponent implements OnInit {
+export class ReactiveFormsPart1_2Component implements OnInit {
   bookingForm: FormGroup;
   destinations: string[] = ['Barcelona', 'Madrid', 'Valencia', 'Sevilla', 'Bilbao', 'Mallorca'];
   filteredDestinations: string[] = [...this.destinations];
