@@ -158,12 +158,12 @@ export class BookingFormComponent implements OnInit {
       firstClass: 500
     };
     
-    // Obtenir la classe de viatge i el num de passatgers per calcular el preu total
+    // Calcular preu
     const travelClass = this.bookingForm.get('travelClass')?.value;
     const passengers = this.bookingForm.get('passengers')?.value;
     
     if (travelClass && passengers) {
-      this.totalPrice = (basePrices[travelClass] || 0) * passengers;
+      this.totalPrice = (basePrices[travelClass]) * passengers;
     } else {
       this.totalPrice = 0;
     }
